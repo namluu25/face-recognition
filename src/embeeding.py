@@ -3,17 +3,19 @@ import numpy as np
 import os
 import glob
 
+from tensorflow.keras.models import load_model
+
 import tensorflow as tf
 import tensorflow_addons as tfa
-from tensorflow.keras.models import load_model
 from tensorflow.keras.utils import CustomObjectScope
 
-with CustomObjectScope({'tf': tf}):
-    model = load_model('./model/nn4.small2.lrn.h5')
+# with CustomObjectScope({'tf': tf}):
+#     model = load_model('./model/nn4.small2.lrn.h5')
     # , compile=False)
 
+model = load_model('./model/facenet_keras.h5')
 def image_to_embedding(image, model):
-    image = cv2.resize(image, (96, 96))  # use 96, 96 for small2.lrn
+    image = cv2.resize(image, (160, 160))  # use 96, 96 for small2.lrn
     img = image[..., ::-1]
     img = np.around(np.transpose(img, (0, 1, 2)) / 255.0, decimals=12)
     x_train = np.array([img])
@@ -37,13 +39,13 @@ def recognize_face(face_image, input_embeddings, model):
             minimum_distance = euclidean_distance
             name = input_name
 
-    if minimum_distance < 0.68:
+    if minimum_distance < 5: #change to 0.68 for small2.lrn
         return str(name)
     else:
         return None
 
 
-def create_input_image_embeddings():
+def create_embeddings():
     input_embeddings = {}
 
     for file in glob.glob("./data/datasets/*"):
