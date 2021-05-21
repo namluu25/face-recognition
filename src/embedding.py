@@ -23,28 +23,6 @@ def image_to_embedding(image, model):
     return embedding
 
 
-def recognize_face(face_image, input_embeddings, model):
-    embedding = image_to_embedding(face_image, model)
-
-    minimum_distance = 200
-    name = None
-
-    # Loop over  names and encodings.
-    for (input_name, input_embedding) in input_embeddings.items():
-
-        euclidean_distance = np.linalg.norm(embedding - input_embedding)
-        print('Euclidean distance from %s is %s' % (input_name, euclidean_distance))
-
-        if euclidean_distance < minimum_distance:
-            minimum_distance = euclidean_distance
-            name = input_name
-
-    if minimum_distance < 5: #change to 0.68 for small2.lrn
-        return str(name)
-    else:
-        return None
-
-
 def create_embeddings():
     input_embeddings = {}
 

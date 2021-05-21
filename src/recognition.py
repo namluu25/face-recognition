@@ -3,15 +3,36 @@ from imutils.video import VideoStream
 import math
 import random
 import cv2
+import numpy as np
 from mtcnn import MTCNN
 
 from src.liveness import check_left, check_right
 from src.attendance import Attendance
-from src.embeeding import recognize_face, model
+from src.embedding import image_to_embedding, model
 
 detector = MTCNN()
 face_cascade = cv2.CascadeClassifier('./model/haarcascade_frontalface_alt.xml')
 
+def recognize_face(face_image, input_embeddings, model):
+    embedding = image_to_embedding(face_image, model)
+
+    minimum_distance = 200
+    name = None
+
+    # Loop over  names and encodings.
+    for (input_name, input_embedding) in input_embeddings.items():
+
+        euclidean_distance = np.linalg.norm(embedding - input_embedding)
+        print('Euclidean distance from %s is %s' % (input_name, euclidean_distance))
+
+        if euclidean_distance < minimum_distance:
+            minimum_distance = euclidean_distance
+            name = input_name
+
+    if minimum_distance < 5: #change to 0.68 for small2.lrn
+        return str(name)
+    else:
+        return None
 
 def recognize_engine(input_embeddings):
     count = 0

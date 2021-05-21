@@ -1,13 +1,15 @@
 import time
 import pyttsx3
 
-from src.embeeding import create_embeddings
+from src.embedding import create_embeddings
 from src.recognition import recognize_engine
 
 # add text-to-speech
 tts = pyttsx3.init()
 
 input_embeddings = create_embeddings()
+
+time.sleep(1)
 
 while True:
     if input_embeddings != {}:
