@@ -63,6 +63,7 @@ def recognize_engine(input_embeddings):
                 if identity is not None:
                     confirmation += 1
                     name = identity
+                    Attendance(name)
             count += 1
         else:
             print("Please be infront of the camera")
