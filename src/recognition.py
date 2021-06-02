@@ -5,11 +5,13 @@ import random
 import cv2
 import numpy as np
 from mtcnn import MTCNN
+import requests
 
 from src.liveness import check_left, check_right
 from src.attendance import Attendance
 from src.embedding import image_to_embedding, model
 
+url = 'http://192.168.100.3:420/unlock'
 detector = MTCNN()
 face_cascade = cv2.CascadeClassifier('./model/haarcascade_frontalface_alt.xml')
 
@@ -141,5 +143,6 @@ def liveness(name):
 
     if tasks_completed == 1:
         print("Welcome " + name)
+        x = requests.get(url)
     else:
         print("Access Denied")
