@@ -11,7 +11,8 @@ from src.liveness import check_left, check_right
 from src.attendance import Attendance
 from src.embedding import image_to_embedding, model
 
-url = 'http://192.168.100.3:420/unlock'
+url = 'http://10.0.50.125:4269/unlock'
+pkey = {'payload': '1'}
 detector = MTCNN()
 face_cascade = cv2.CascadeClassifier('./model/haarcascade_frontalface_alt.xml')
 
@@ -143,6 +144,6 @@ def liveness(name):
 
     if tasks_completed == 1:
         print("Welcome " + name)
-        x = requests.get(url)
+        x = requests.post(url, data = pkey)
     else:
         print("Access Denied")
