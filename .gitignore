@@ -1,4 +1,5 @@
 model_triplot_small1.h5
+trained_model.h5
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/

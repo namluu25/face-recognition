@@ -6,15 +6,24 @@ import cv2
 import numpy as np
 from mtcnn import MTCNN
 import requests
+import hashlib
 
 from src.liveness import check_left, check_right
 from src.attendance import Attendance
 from src.embedding import image_to_embedding, model
 
-url = 'http://10.0.50.125:4269/unlock'
-pkey = {'payload': '1'}
+url = 'http://0.0.0.0:4269/unlock'
+# pkey = {'currentHash': key}
 detector = MTCNN()
 face_cascade = cv2.CascadeClassifier('./model/haarcascade_frontalface_alt.xml')
+
+key = 'd682ed4ca4d989c134ec94f1551e1ec580dd6d5a6ecde9f3d35e6e4a717fbde4'
+
+def hash_func(key):
+    currentHash = key
+    temp = hashlib.sha256(currentHash.encode('utf-8'))
+    futureHash = temp.hexdigest()
+    return futureHash
 
 def recognize_face(face_image, input_embeddings, model):
     embedding = image_to_embedding(face_image, model)
@@ -32,7 +41,7 @@ def recognize_face(face_image, input_embeddings, model):
             minimum_distance = euclidean_distance
             name = input_name
 
-    if minimum_distance < 0.68:  # change to 0.68 for small2.lrn
+    if minimum_distance < 1:  # change to 0.68 for small2.lrn
         return str(name)
     else:
         return None
@@ -144,6 +153,10 @@ def liveness(name):
 
     if tasks_completed == 1:
         print("Welcome " + name)
-        x = requests.post(url, data = pkey)
+        global key
+        key = hash_func(key)
+        print(key)
+        requests.post(url, data = {'currentHash': key})
+        requests.get()
     else:
         print("Access Denied")
