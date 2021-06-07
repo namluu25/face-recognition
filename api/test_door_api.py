@@ -53,6 +53,7 @@ def hash_func(x0):
     futureKey = temp.hexdigest()
     return futureKey
 
+
 @app.route('/unlock', methods=['POST'])
 def auth_check():
     global currentKey
