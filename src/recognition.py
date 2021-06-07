@@ -1,29 +1,16 @@
-import imutils
-from imutils.video import VideoStream
 import math
-import random
 import cv2
 import numpy as np
 from mtcnn import MTCNN
-import requests
-import hashlib
 
-from src.liveness import check_left, check_right
+from src.liveness import check_right
 from src.attendance import Attendance
 from src.embedding import image_to_embedding, model
+from src.encrypting import send_key
 
-url = 'http://0.0.0.0:4269/unlock'
-# pkey = {'currentHash': key}
 detector = MTCNN()
 face_cascade = cv2.CascadeClassifier('./model/haarcascade_frontalface_alt.xml')
 
-key = 'd682ed4ca4d989c134ec94f1551e1ec580dd6d5a6ecde9f3d35e6e4a717fbde4'
-
-def hash_func(key):
-    currentHash = key
-    temp = hashlib.sha256(currentHash.encode('utf-8'))
-    futureHash = temp.hexdigest()
-    return futureHash
 
 def recognize_face(face_image, input_embeddings, model):
     embedding = image_to_embedding(face_image, model)
@@ -45,6 +32,7 @@ def recognize_face(face_image, input_embeddings, model):
         return str(name)
     else:
         return None
+
 
 def recognize_engine(input_embeddings):
     count = 0
@@ -92,7 +80,6 @@ def recognize_engine(input_embeddings):
 
 def liveness(name):
     tasks = ['Right']
-    # tasks = random.sample(tasks, 2)
 
     font = cv2.FONT_HERSHEY_SIMPLEX
     count, tasks_completed, out = 0, 0, 0
@@ -120,10 +107,8 @@ def liveness(name):
             if count == 0:
                 original_eye_dist = math.sqrt((keypoints['right_eye'][0] - keypoints['left_eye'][0]) ** 2 + (
                             keypoints['right_eye'][1] - keypoints['left_eye'][1]) ** 2)
-                # print("Original Eye Distance = ",original_eye_dist)
                 original_mouth_dist = math.sqrt((keypoints['mouth_right'][0] - keypoints['mouth_left'][0]) ** 2 + (
                             keypoints['mouth_right'][1] - keypoints['mouth_left'][1]) ** 2)
-                # print("Original Lip Distance = ",original_mouth_dist)
                 original_nose_x = keypoints['nose'][0]
                 count += 1
                 continue
@@ -135,13 +120,9 @@ def liveness(name):
             if task == 'Right':
                 status = check_right(keypoints['right_eye'], keypoints['left_eye'], keypoints['nose'],
                                      original_eye_dist, original_nose_x)
-            # elif task == 'Left':
-            #     status = check_left(keypoints['right_eye'], keypoints['left_eye'], keypoints['nose'],
-            #                         original_eye_dist, original_nose_x)
 
             if status:
                 tasks_completed += 1
-                # tasks = tasks[1:]
             count += 1
         else:
             out += 1
@@ -153,10 +134,7 @@ def liveness(name):
 
     if tasks_completed == 1:
         print("Welcome " + name)
-        global key
-        key = hash_func(key)
-        print(key)
-        requests.post(url, data = {'currentHash': key})
-        requests.get()
+        send_key()
+
     else:
         print("Access Denied")

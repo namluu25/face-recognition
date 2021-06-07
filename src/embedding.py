@@ -11,9 +11,8 @@ from tensorflow.keras.utils import CustomObjectScope
 
 with CustomObjectScope({'tf': tf}):
     model = load_model('./model/trained_model.h5')
-    # , compile=False)
 
-#model = load_model('./model/facenet_keras.h5')
+
 def image_to_embedding(image, model):
     image = cv2.resize(image, (224, 224))  # use 96, 96 for small2.lrn
     img = image[..., ::-1]

@@ -1,5 +1,7 @@
 import datetime
 from datetime import datetime
+
+
 def Attendance(name):
     with open('./data/attendance.csv', 'r+') as f:
         myDataList = f.readlines()

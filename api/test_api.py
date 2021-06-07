@@ -1,40 +1,38 @@
 from flask import Flask, Response, request
 import hashlib
+import json
 
 app = Flask(__name__)
 
-currentKey = '574146c354c05d5705be0f8d0177187e1dbeb5c9e5be9863566df53e948508f4'
-receivedKey = ''
-sendKey = ''
+currentKey = '16dc4c1dc74ff92ccfeac4cd27cabb0ee8cb4855c0d69dbd775bf3329bc17f00'
+receivedKey = ''  # key get from client
+sendKey = ''  # key send back to client
+
 
 def hash_func(x0):
-    currentHash = x0
-    temp = hashlib.sha256(currentHash.encode('utf-8'))
-    futureHash = temp.hexdigest()
-    return futureHash
+    currentKey = x0
+    temp = hashlib.sha256(currentKey.encode('utf-8'))
+    futureKey = temp.hexdigest()
+    return futureKey
 
-@app.route('/unlock', methods=['POST', 'GET'])
 
+@app.route('/unlock', methods=['POST'])
 def auth_check():
     global currentKey
-    key = request.form.get("currentHash")
-    print(key)
-    receivedKey = key
-    print(receivedKey)
+
+    jsondata = request.get_json()
+    data = json.loads(jsondata)
+    receivedKey = data['currentHash']
+
     if receivedKey == currentKey:
         sendKey = hash_func(currentKey)
-        print(sendKey)
+        result = {"receivedHash": sendKey}
         currentKey = hash_func(sendKey)
-        return Response(status=200, data= {"receivedHash": sendKey})
-    else:
-        return Response(status=403)
+        return json.dumps(result)
+    return json.dumps({
+        'res': 'wrong encrypted key'
+    })
 
-@app.route('/test', methods=['GET'])
-
-def test():
-    abc = hash_func(currentKey)
-    print(abc)
-    return Response(status=200)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4269')
