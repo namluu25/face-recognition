@@ -1,0 +1,199 @@
+\documentclass[a4paper,12pt,twoside,openright,openany]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese=nohyphenation]{hyphsubst}
+\usepackage[vietnamese,main=english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{svg}
+\usepackage{footnotebackref}
+\usepackage{hyperref}
+\usepackage[nomain,acronym]{glossaries}
+\input{Acronyms}
+\usepackage{float}
+\makenoidxglossaries
+%\usepackage[Latin1]{inputenc}       %caractËres accentuÈs et autres
+%\usepackage[T1]{fontenc}            %cÈsure des mots accentuÈs
+%\usepackage[frenchb]{babel}         %francisation (chapitre,annexe,rÈfÈrences...)
+\usepackage{graphicx}               %insertion graphiques
+\graphicspath{ {./images/} }
+\usepackage{a4wide}
+%\usepackage{psfig}
+\usepackage{amsmath}
+\usepackage{soul}
+%\psfigurepath{}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{gensymb}
+\usepackage{makecell}
+%\usepackage{times}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+% \stepcounter{secnumdepth}
+% \stepcounter{tocdepth}
+
+
+% \renewcommand{\thefootnote}{}
+
+%% Necessaire pour creer les index
+\usepackage{makeidx}
+
+\makeindex
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% MODIFY THIS PART FOR THE FIRST PAGE
+
+% change the master level 
+\def\MasterLevel{Bachelor Thesis}
+%\def\MasterLevel{Master 1}
+
+\def\InternshipTitle{Application of Face recognition to control devices}
+\def\FirstName{LUU}
+\def\LastName{Hai Nam}
+\def\HostOrganization{Harmony Enterprise Solution}
+\def\CityName{Hanoi}
+\def\CountryName{Vietnam}
+\def\UniversityName{University of Science and Technology Hanoi}
+\def\Supervisor{Mr. LE Quoc Dat}
+\def\internalVisor{Dr. TRAN Giang Son}
+
+
+
+\setlength{\textwidth}{175mm}
+%
+\setlength{\textheight}{245mm}
+
+\setlength{\topmargin}{-10mm}
+
+\setlength{\evensidemargin}{-8mm}
+
+\setlength{\oddsidemargin}{-8mm}
+
+% ----------------------- DEBUT DOCUMENT ---------------------------
+
+\begin{document}
+
+
+
+\pagestyle{plain}
+
+
+\pagenumbering{gobble}
+
+
+% ----------------- DEFINITION DU TITRE ET DES AUTEURS ---------------------------
+
+\input{Title}
+\newpage
+
+% ----------------------- PAGE VIDE ---------------------------
+
+
+
+
+\include{Signature}
+
+
+
+\setcounter{page}{1}
+\pagenumbering{Roman}
+
+
+% ----------------------- ACKNOWLEDGEMENTS ---------------------------
+
+\include{Acknowledgements}
+
+
+
+% ----------------------- RESUME ---------------------------
+
+
+% ----------------------- PAGE VIDE ---------------------------
+
+
+% ----------------------- REMERCIEMENTS ---------------------------
+
+%\include{Thanks}
+
+% ----------------------- TABLE DES MATIERES ---------------------------
+
+\renewcommand*\contentsname{Table of contents}
+
+\tableofcontents{}
+\addcontentsline{toc}{chapter}{Table of contents}
+\clearpage
+\newpage
+
+\listoffigures{}
+\addcontentsline{toc}{chapter}{List of Figure}
+\clearpage
+\newpage
+
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+\clearpage
+\newpage
+
+
+
+\addcontentsline{toc}{chapter}{List of Acronyms}
+\printnoidxglossary[type=\acronymtype,title=List of Acronyms]
+\clearpage
+\newpage
+
+
+
+
+% ----------------------- TABLE DES FIGURES ---------------------------
+%\listoffigures{}
+
+% ----------------------- TABLE DES TABLES ---------------------------
+%\listoftables{}
+
+% ----------------------- TABLE DES TABLES ---------------------------
+%\listoflistings{}
+
+% ----------------------- CHAPITRE ---------------------------
+\pagenumbering{arabic}
+
+\include{Introduction}
+
+
+
+
+
+% ----------------------- CHAPITRE ---------------------------
+
+% \include{StateOfTheArt}
+
+% ----------------------- CHAPITRE ---------------------------
+
+\include{MandM}
+
+% ----------------------- CHAPITRE ---------------------------
+
+\include{Results}
+
+
+% ----------------------- CHAPITRE ---------------------------
+
+\include{Conclusion}
+
+% ----------------------- BIBLIOGRAPHIE ---------------------------
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{Biblio}
+\bibliographystyle{unsrt}
+
+% ----------------------- ANNEXES ---------------------------
+
+\appendix
+\include{Appendix}
+
+
+
+
+\end{document}

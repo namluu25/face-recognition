@@ -107,8 +107,8 @@ def liveness(name):
             if count == 0:
                 original_eye_dist = math.sqrt((keypoints['right_eye'][0] - keypoints['left_eye'][0]) ** 2 + (
                             keypoints['right_eye'][1] - keypoints['left_eye'][1]) ** 2)
-                # original_mouth_dist = math.sqrt((keypoints['mouth_right'][0] - keypoints['mouth_left'][0]) ** 2 + (
-                #             keypoints['mouth_right'][1] - keypoints['mouth_left'][1]) ** 2)
+                original_mouth_dist = math.sqrt((keypoints['mouth_right'][0] - keypoints['mouth_left'][0]) ** 2 + (
+                            keypoints['mouth_right'][1] - keypoints['mouth_left'][1]) ** 2)
                 original_nose_x = keypoints['nose'][0]
                 count += 1
                 continue
